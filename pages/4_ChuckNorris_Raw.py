@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 
-st.set_page_config(page_title="Chuck Norris Jokes", page_icon="🌍")
+st.set_page_config(page_title="Chuck Norris Jokes", page_icon="🌍",layout="wide")
 
 # from llama_index.core import (
 #     Document,
@@ -40,15 +40,20 @@ def get_chuck_norris_jokes(data, theme, n_to_get=10):
 
 # st.markdown("# Chuck Norris Jokes")
 # st.sidebar.header("Chuck Norris Jokes")
-st.title("Chuck Norris Jokes")
-st.write("There are a total of {} jokes in the system.".format(len(jokes)))
 
-st.write("Select a theme to generate Chuck Norris jokes.")
+c1, c2 = st.columns(2)
+
 # Theme selection
-theme = st.text_input("Enter your theme (e.g. skills, technology, nature, history, invincibility, meta, etc.)", "technology")
-n_jokes = st.text_input("Enter the number of jokes to generate", 10)
-if st.button('Re-Load'):
+with c1:
+    st.title("Chuck Norris Jokes")
+    st.write("There are a total of {} jokes in the system.".format(len(jokes)))
+    st.write("Select a theme to generate Chuck Norris jokes.")
+    theme = st.text_input("Enter your theme (e.g. skills, technology, nature, history, invincibility, meta, etc.)", "technology")
+    n_jokes = st.text_input("Enter the number of jokes to generate", 10)
+    st.button('Re-Load')
+    
     n_jokes = int(n_jokes)
-    jokes = get_chuck_norris_jokes(jokes, theme, n_to_get=n_jokes)
-    for joke in jokes:
-        st.info(joke)
+    here_jokes = get_chuck_norris_jokes(jokes, theme, n_to_get=n_jokes)
+    
+with c2:
+    st.table(here_jokes)
