@@ -14,8 +14,19 @@
 
 import inspect
 import textwrap
+import requests
 
 import streamlit as st
+
+import os
+
+from llama_index.core import (
+    Document,
+    VectorStoreIndex, 
+    StorageContext,
+    load_index_from_storage
+)
+
 
 
 def show_code(demo):
@@ -26,3 +37,4 @@ def show_code(demo):
         st.markdown("## Code")
         sourcelines, _ = inspect.getsourcelines(demo)
         st.code(textwrap.dedent("".join(sourcelines[1:])))
+
