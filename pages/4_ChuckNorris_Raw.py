@@ -56,4 +56,4 @@ with c1:
     here_jokes = get_chuck_norris_jokes(jokes, theme, n_to_get=n_jokes)
     
 with c2:
-    st.table(here_jokes)
+    st.dataframe(dict(jokes=here_jokes))
