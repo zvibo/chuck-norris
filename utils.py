@@ -20,13 +20,6 @@ import streamlit as st
 
 import os
 
-from llama_index.core import (
-    Document,
-    VectorStoreIndex, 
-    StorageContext,
-    load_index_from_storage
-)
-
 
 
 def show_code(demo):
