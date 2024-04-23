@@ -1,7 +1,5 @@
-# Welcome to streamlit
+# playing around with text embeddings with chuck norris jokes.
 
-This is the app you get when you run `streamlit hello`, extracted as its own app.
+all jokes are from: chucknorris.io.
 
-Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
-
-Check it out on [Streamlit Community Cloud](https://st-hello-app.streamlit.app/)
+this is just an experiment to see if i can use text embedding tools to identify duplicates, etc.
