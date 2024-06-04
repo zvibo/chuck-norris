@@ -1,6 +1,5 @@
 import requests
 import streamlit as st
-import more_itertools as mit
 from utils import show_code, cache_data, get_chuck_jokes, get_moderated_jokes
 import time
 
