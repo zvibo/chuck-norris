@@ -4,10 +4,10 @@ pandas
 pydeck
 streamlit
 openai
-llama-index
 requests
 duckdb
 sentence-transformers
+llama-index
 llama-index-embeddings-openai
 llama-index-embeddings-huggingface
 more_itertools

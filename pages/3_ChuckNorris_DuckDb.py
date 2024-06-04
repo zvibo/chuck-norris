@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 import json
 import time
-from utils import show_code, cache_data, get_chuck_jokes, get_moderated_jokes
+from utils import show_code, cache_data, get_moderated_jokes
 
 
 st.set_page_config(page_title="CNDuck", page_icon="🌍",layout="wide")
@@ -50,7 +50,7 @@ if not db_exists():
 
 @st.cache_resource()
 def get_model():
-    return SentenceTransformer('intfloat/e5-small-v2')
+    return SentenceTransformer('intfloat/e5-small-v2', cache_folder="cache_emb_models")
 
 
 my_model = get_model()
@@ -73,8 +73,9 @@ def main():
         start = time.time()
         results = search_duck(query)
         end = time.time()
+        n_found = len(results)
         df = pd.DataFrame(results, columns = ['score', 'joke'])
-        st.write(f"Search took {end - start:.2f} seconds.")
+        st.write(f"Found {n_found} jokes in {end - start:.2f} seconds.")
         st.table(df)
     else:
         show_code(get_joke_params)

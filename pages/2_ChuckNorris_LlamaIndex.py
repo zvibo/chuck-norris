@@ -25,9 +25,10 @@ def load_chuck_documents():
 @st.cache_resource()
 def load_chuck_index():
     Settings.embed_model = HuggingFaceEmbedding(
-        model_name="intfloat/e5-small-v2" # chosen based on https://huggingface.co/spaces/mteb/leaderboard
+        model_name="intfloat/e5-small-v2", # chosen based on https://huggingface.co/spaces/mteb/leaderboard
+        cache_folder="cache_emb_models"  # same cache as SentenceTransformers
     )
-    PERSIST_DIR = "cn_cache"
+    PERSIST_DIR = "cache_llama_index"
     if not os.path.exists(PERSIST_DIR):
         documents = load_chuck_documents()
         index = VectorStoreIndex.from_documents(documents)
