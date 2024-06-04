@@ -65,21 +65,23 @@ def search_duck(query, model = my_model, db = my_db, is_unsafe = False):
                     parameters = [e5_embed(query), is_unsafe])
     return db.fetchall()
 
+def main():
+    n_jokes = my_db.execute('select count(1) from jokes where is_unsafe = False').fetchall()[0][0]
+    query = st.text_input("Search {} jokes with **DuckDB**".format(n_jokes), "")
+    st.button('Re-Load')
+    if len(query) > 1:
+        start = time.time()
+        results = search_duck(query)
+        end = time.time()
+        df = pd.DataFrame(results, columns = ['score', 'joke'])
+        st.write(f"Search took {end - start:.2f} seconds.")
+        st.table(df)
+    else:
+        show_code(get_joke_params)
+        show_code(build_chuck_db)
+        show_code(search_duck)
+        show_code(e5_embed)
+        show_code(main)
 
-
-old_query = None
-n_jokes = my_db.execute('select count(1) from jokes where is_unsafe = False').fetchall()[0][0]
-query = st.text_input("Search {} jokes with **DuckDB**".format(n_jokes), "")
-st.button('Re-Load')
-if len(query) > 1:
-    start = time.time()
-    results = search_duck(query)
-    end = time.time()
-    df = pd.DataFrame(results, columns = ['score', 'joke'])
-    st.write(f"Search took {end - start:.2f} seconds.")
-    st.table(df)
-else:
-    show_code(get_joke_params)
-    show_code(build_chuck_db)
-    show_code(search_duck)
-    
+if __name__ == "__main__":
+    main()

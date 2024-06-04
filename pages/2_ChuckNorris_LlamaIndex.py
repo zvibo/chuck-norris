@@ -25,7 +25,7 @@ def load_chuck_documents():
 @st.cache_resource()
 def load_chuck_index():
     Settings.embed_model = HuggingFaceEmbedding(
-        model_name="intfloat/e5-small-v2"
+        model_name="intfloat/e5-small-v2" # chosen based on https://huggingface.co/spaces/mteb/leaderboard
     )
     PERSIST_DIR = "cn_cache"
     if not os.path.exists(PERSIST_DIR):
@@ -38,7 +38,7 @@ def load_chuck_index():
     return index
 
 @st.cache_resource()
-def get_joke_count():
+def get_joke_count(is_unsafe=False):
     return len([j for j in get_moderated_jokes() if j['moderated'] == is_unsafe])
 
 
@@ -49,20 +49,25 @@ def search_jokes_llama_index(index, theme, n_to_get=10, is_moderated=False):
             if node.metadata["moderated"] == is_moderated
             ][:n_to_get]
 
+def main():
+    is_unsafe = False
+    with st.sidebar:
+        is_unsafe = st.checkbox("Show unsafe jokes", value=False)
+    theme = st.text_input("Search {} jokes using **LlamaIndex**".format(get_joke_count(is_unsafe)), "")
+    st.button('Re-Load')
 
-is_unsafe = False
-theme = st.text_input("Search {} jokes using **LlamaIndex**".format(get_joke_count()), "")
-# is_unsafe = st.checkbox("Show unsafe jokes", value=False)
-st.button('Re-Load')
+    if theme:
+        start = time.time()
+        index = load_chuck_index()
+        here_jokes = search_jokes_llama_index(index, theme, n_to_get=100, is_moderated=is_unsafe)
+        end = time.time()
+        st.write(f"Found {len(here_jokes)} jokes in {end-start:.2f} seconds.")
+        st.table(here_jokes)
+    else:
+        show_code(load_chuck_documents)
+        show_code(load_chuck_index)
+        show_code(search_jokes_llama_index)
+        show_code(main)
 
-if theme:
-    start = time.time()
-    index = load_chuck_index()
-    here_jokes = search_jokes_llama_index(index, theme, n_to_get=100, is_moderated=is_unsafe)
-    end = time.time()
-    st.write(f"Found {len(here_jokes)} jokes in {end-start:.2f} seconds.")
-    st.table(here_jokes)
-else:
-    show_code(load_chuck_documents)
-    show_code(load_chuck_index)
-    show_code(search_jokes_llama_index)
+if __name__ == "__main__":
+    main()
